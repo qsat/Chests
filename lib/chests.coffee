@@ -49,7 +49,6 @@ class Chests
     else
       throw new Error "Invalid arguments."
 
-
   on: (route, listenerOrEvent, cb = null) ->
 
     route = @_routeToRegExp route
@@ -156,4 +155,10 @@ class Url
   url: ""
   constructor: (opt)-> {@prev, @url} = opt
 
-module.exports = Chests
+if typeof module is "object" && typeof module.exports is "object"
+  module.exports = Chests
+if typeof define is 'function' && define.amd 
+  define 'chests', [], -> Chests
+else if typeof window isnt "undefined" 
+  window.Chests = Chests
+
