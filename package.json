@@ -1,19 +1,35 @@
 {
-  "name": "urlutil",
-  "version": "0.0.0",
+  "name": "Chests",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "cd test && mocha index.coffee --compilers coffee:coffee-script/register -R spec -w --debug",
+    "build": ""
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/qsat/urlutil.git"
+    "url": "https://github.com/qsat/Chests.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/qsat/urlutil/issues"
+    "url": "https://github.com/qsat/Chests/issues"
   },
-  "homepage": "https://github.com/qsat/urlutil"
+  "homepage": "https://github.com/qsat/Chests",
+  "dependencies": {
+    "coffee-script": "~1.7.1",
+    "underscore": "~1.6.0",
+    "es6-promise": "~1.0.0"
+  },
+  "devDependencies": {
+    "mocha": "~1.18.2",
+    "expect.js": "~0.3.1",
+    "commander": "~2.2.0",
+    "glob": "~3.2.9",
+    "jquery": "~2.1.0",
+    "coffeeify": "~0.6.0",
+    "uglifyify": "~2.1.1",
+    "browserify": "~3.46.0"
+  }
 }
