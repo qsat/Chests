@@ -1,59 +1,4 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-// shim for using process in browser
-
-var process = module.exports = {};
-
-process.nextTick = (function () {
-    var canSetImmediate = typeof window !== 'undefined'
-    && window.setImmediate;
-    var canPost = typeof window !== 'undefined'
-    && window.postMessage && window.addEventListener
-    ;
-
-    if (canSetImmediate) {
-        return function (f) { return window.setImmediate(f) };
-    }
-
-    if (canPost) {
-        var queue = [];
-        window.addEventListener('message', function (ev) {
-            var source = ev.source;
-            if ((source === window || source === null) && ev.data === 'process-tick') {
-                ev.stopPropagation();
-                if (queue.length > 0) {
-                    var fn = queue.shift();
-                    fn();
-                }
-            }
-        }, true);
-
-        return function nextTick(fn) {
-            queue.push(fn);
-            window.postMessage('process-tick', '*');
-        };
-    }
-
-    return function nextTick(fn) {
-        setTimeout(fn, 0);
-    };
-})();
-
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-}
-
-// TODO(shtylman)
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-
-},{}],2:[function(require,module,exports){
 var Chests, Drawer, Promise, Url, escapeRegExp, eventSplitter, namedParam, optionalParam, splatParam, _;
 
 _ = require("underscore");
@@ -331,10 +276,20 @@ Url = (function() {
 
 })();
 
-module.exports = Chests;
+if (typeof module === "object" && typeof module.exports === "object") {
+  module.exports = Chests;
+}
+
+if (typeof define === 'function' && define.amd) {
+  define('chests', [], function() {
+    return Chests;
+  });
+} else if (typeof window !== "undefined") {
+  window.Chests = Chests;
+}
 
 
-},{"./drawer.coffee":3,"es6-promise":4,"underscore":14}],3:[function(require,module,exports){
+},{"./drawer.coffee":2,"es6-promise":4,"underscore":14}],2:[function(require,module,exports){
 var Chest, Promise, defer, wait, _,
   __slice = [].slice;
 
@@ -447,7 +402,69 @@ Chest = (function() {
 module.exports = Chest;
 
 
-},{"es6-promise":4,"underscore":14}],4:[function(require,module,exports){
+},{"es6-promise":4,"underscore":14}],3:[function(require,module,exports){
+// shim for using process in browser
+
+var process = module.exports = {};
+
+process.nextTick = (function () {
+    var canSetImmediate = typeof window !== 'undefined'
+    && window.setImmediate;
+    var canPost = typeof window !== 'undefined'
+    && window.postMessage && window.addEventListener
+    ;
+
+    if (canSetImmediate) {
+        return function (f) { return window.setImmediate(f) };
+    }
+
+    if (canPost) {
+        var queue = [];
+        window.addEventListener('message', function (ev) {
+            var source = ev.source;
+            if ((source === window || source === null) && ev.data === 'process-tick') {
+                ev.stopPropagation();
+                if (queue.length > 0) {
+                    var fn = queue.shift();
+                    fn();
+                }
+            }
+        }, true);
+
+        return function nextTick(fn) {
+            queue.push(fn);
+            window.postMessage('process-tick', '*');
+        };
+    }
+
+    return function nextTick(fn) {
+        setTimeout(fn, 0);
+    };
+})();
+
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+
+function noop() {}
+
+process.on = noop;
+process.once = noop;
+process.off = noop;
+process.emit = noop;
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+}
+
+// TODO(shtylman)
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+
+},{}],4:[function(require,module,exports){
 "use strict";
 var Promise = require("./promise/promise").Promise;
 var polyfill = require("./promise/polyfill").polyfill;
@@ -610,8 +627,8 @@ function asap(callback, arg) {
 }
 
 exports.asap = asap;
-}).call(this,require("/Users/macbookpro/.anyenv/envs/ndenv/versions/v0.10.25/lib/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"/Users/macbookpro/.anyenv/envs/ndenv/versions/v0.10.25/lib/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":1}],7:[function(require,module,exports){
+}).call(this,require("/Users/macbookpro/Dropbox/proj/Chests/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"/Users/macbookpro/Dropbox/proj/Chests/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":3}],7:[function(require,module,exports){
 "use strict";
 var config = {
   instrument: false
@@ -2402,4 +2419,4 @@ exports.now = now;
   }
 }).call(this);
 
-},{}]},{},[2])
+},{}]},{},[1])
