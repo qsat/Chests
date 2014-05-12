@@ -1,0 +1,10 @@
+{
+  "before_tests": "browserify test/index.coffee -o test/index.js -t coffeeify",
+  "src_files": ["test/**/*.js"],
+  "framework": "mocha",
+  "test_page": "test/runner.mustache",
+  "routes": {
+    "/vendor": "./node_modules/"
+  }
+}
+

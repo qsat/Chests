@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TEST</title>
+  <link rel="stylesheet" href="/vendor/mocha/mocha.css">
+  <script type="text/javascript" src="/vendor/mocha/mocha.js"></script>
+  <script type="text/javascript" src="/vendor/expect.js/index.js"></script>
+  <script type="text/javascript">mocha.setup("bdd")</script>
+  <script type="text/javascript" src="/testem.js"></script>
+  {{#serve_files}}
+  <script type="text/javascript" src="../{{src}}"></script>
+  {{/serve_files}}
+
+</head>
+<body>
+  <div id="mocha"></div>
+
+  <script type="text/javascript">
+        mocha.run();
+  </script>
+</body>
+</html>

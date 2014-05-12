@@ -4,10 +4,9 @@ _ = require "underscore"
 $ = require "jquery"
 Promise = require( "es6-promise" ).Promise
 
-require 'coffee-script/register'
-expect = require 'expect.js'
+# expect = require 'expect.js'
 
-uu = new (require "../lib/chests")
+uu = new (require "../lib/chests.coffee")
 
 describe "urlの解析", ->
   it "parseUrl", ->

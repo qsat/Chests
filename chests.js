@@ -450,8 +450,11 @@ process.argv = [];
 function noop() {}
 
 process.on = noop;
+process.addListener = noop;
 process.once = noop;
 process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
 process.emit = noop;
 
 process.binding = function (name) {
@@ -627,8 +630,8 @@ function asap(callback, arg) {
 }
 
 exports.asap = asap;
-}).call(this,require("/Users/macbookpro/Dropbox/proj/Chests/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"/Users/macbookpro/Dropbox/proj/Chests/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":3}],7:[function(require,module,exports){
+}).call(this,require("FWaASH"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"FWaASH":3}],7:[function(require,module,exports){
 "use strict";
 var config = {
   instrument: false
