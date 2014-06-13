@@ -1,1 +1,1 @@
-module.exports = requre( "./lib/chests" );
+module.exports = require( "./lib/chests" );

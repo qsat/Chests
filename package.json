@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "cd test && mocha index.coffee --compilers coffee:coffee-script/register -R spec -w --debug --require ./inject.coffee",
-    "compile": "browserify lib/chests.coffee -o chests.js -t coffeeify",
+    "compile": "browserify ./src/chests.coffee -o chests.js -t coffeeify",
     "minify": "browserify -g uglifyify ./chests.js > ./chests.min.js",
-    "release": "npm run compile && npm run minify && coffee -c ./lib"
+    "release": "coffee -c -o ./lib ./src"
   },
   "repository": {
     "type": "git",

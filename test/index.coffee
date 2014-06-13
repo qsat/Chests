@@ -6,7 +6,7 @@ Promise = require( "es6-promise" ).Promise
 
 # nodejs でテスト実行時に Expectは ./inject.coffee から読み込む
 
-uu = new (require "../lib/chests.coffee")
+uu = new (require "../src/chests.coffee")
 
 describe "urlの解析", ->
   it "parseUrl", ->

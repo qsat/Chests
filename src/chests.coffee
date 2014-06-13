@@ -1,6 +1,6 @@
 _ = require "underscore"
 Promise = require( "es6-promise" ).Promise
-Drawer = require "./drawer.coffee"
+Drawer = require "./drawer"
 
 eventSplitter = /\s+/
 optionalParam = /\((.*?)\)/g
