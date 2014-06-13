@@ -4,7 +4,7 @@ _ = require "underscore"
 $ = require "jquery"
 Promise = require( "es6-promise" ).Promise
 
-# expect = require 'expect.js'
+# nodejs でテスト実行時に Expectは ./inject.coffee から読み込む
 
 uu = new (require "../lib/chests.coffee")
 
@@ -16,6 +16,9 @@ describe "urlの解析", ->
     expect( uu._parseUrl( "/user/index" ).length ).to.be 3
     expect( uu._parseUrl( "user/index/" ).length ).to.be 3
     expect( uu._parseUrl( "/user/index/" ).length ).to.be 3
+
+#  it "test", ->
+#    expect(1).to.be(1)
 
 describe "1回目のアクセス", ->
   it "findRoute: 2つのURLから通過部分をみつける", ->

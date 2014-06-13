@@ -7,7 +7,7 @@
     "test": "cd test && mocha index.coffee --compilers coffee:coffee-script/register -R spec -w --debug --require ./inject.coffee",
     "compile": "browserify lib/chests.coffee -o chests.js -t coffeeify",
     "minify": "browserify -g uglifyify ./chests.js > ./chests.min.js",
-    "release": "npm run compile && npm run minify"
+    "release": "npm run compile && npm run minify && coffee -c ./lib"
   },
   "repository": {
     "type": "git",
@@ -20,11 +20,11 @@
   },
   "homepage": "https://github.com/qsat/Chests",
   "dependencies": {
-    "coffee-script": "~1.7.1",
     "underscore": "~1.6.0",
     "es6-promise": "~1.0.0"
   },
   "devDependencies": {
+    "coffee-script": "~1.7.1",
     "mocha": "~1.18.2",
     "expect.js": "~0.3.1",
     "commander": "~2.2.0",
@@ -32,6 +32,7 @@
     "jquery": "~2.1.0",
     "coffeeify": "~0.6.0",
     "uglifyify": "~2.1.1",
-    "browserify": "~3.46.0"
+    "browserify": "~4.1.10",
+    "watchify": "~0.9.0"
   }
 }
