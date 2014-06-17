@@ -14,7 +14,7 @@ class Chests
   routes: null
   eventList: ['leave', 'close', 'open', 'enter']
 
-  wait: (ms) -> Promise (res, rej) -> setTimeout (-> res()), ms
+  wait: (ms) -> new Promise (res, rej) -> setTimeout (-> res()), ms
 
   constructor: ->
     @routes = []
