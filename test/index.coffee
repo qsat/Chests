@@ -113,6 +113,8 @@ describe "URLパターンを登録する", ->
   it "遷移中に別のURLへ移動するパターン", (done) ->
 
     uu.activate "/users"
+    uu.activate "/users/edit/4"
+
     wait 20
     .then ->
       uu.activate "/users/edit/1", true

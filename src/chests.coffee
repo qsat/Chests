@@ -14,6 +14,8 @@ class Chests
   routes: null
   eventList: ['leave', 'close', 'open', 'enter']
 
+  wait: (ms) -> Promise (res, rej) -> setTimeout (-> res()), ms
+
   constructor: ->
     @routes = []
     @drawer = new Drawer
@@ -137,18 +139,19 @@ class Chests
         @drawer.add => @trigger '/', "enter"
 
   activate: (url, interrupt = false) ->
-    if interrupt and @drawer.drawers.length > 0
-      @log "\n ---- Interrupted: all promises will be rejected :: #{@url.prev?.url ? null}----\n"
-      @drawer.clear()
-
-    @url = new Url prev: @url||null, url: url
-
-    @drawer.then => 
-      @log "\n「#{@url.prev?.url ? null}」 ================> 「#{url}」\n"
-
-      @matchRoute( @url.url, @url.prev?.url ? null ).then =>
+    @wait(0).then =>
+      if interrupt and @drawer.drawers.length > 0
+        @log "\n ---- Interrupted: all promises will be rejected :: #{@url.prev?.url ? null}----\n"
         @drawer.clear()
-        @log "\n================= ACTIVATED 「#{url}」\n"
+
+      @url = new Url prev: @url||null, url: url
+
+      @drawer.then => 
+        @log "\n「#{@url.prev?.url ? null}」 ================> 「#{url}」\n"
+
+        @matchRoute( @url.url, @url.prev?.url ? null ).then =>
+          @drawer.clear()
+          @log "\n================= ACTIVATED 「#{url}」\n"
 
 class Url
   prev: {}
