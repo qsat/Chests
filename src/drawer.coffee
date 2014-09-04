@@ -13,7 +13,7 @@ wait = (ms) ->
   setTimeout ( -> d.resolve() ), ms
   d
 
-class Chest
+class Drawer
   constructor: ->
     @drawers = []
     @prev =  Promise.resolve true
@@ -61,8 +61,8 @@ class Chest
     d.catch -> value.reject?()
     d
 
-#c = new Chest
+#c = new Drawer
 #c.add -> wait 1300
 #c.add [(-> wait 1300), (-> wait 300), (-> wait 1000)]
 
-module.exports = Chest
+module.exports = Drawer
