@@ -7,6 +7,7 @@ Promise = require( "es6-promise" ).Promise
 # nodejs でテスト実行時に Expectは ./inject.coffee から読み込む
 
 uu = new (require "../src/chests.coffee")
+uu.debug = true
 
 describe "urlの解析", ->
   it "parseUrl", ->
@@ -16,9 +17,6 @@ describe "urlの解析", ->
     expect( uu._parseUrl( "/user/index" ).length ).to.be 3
     expect( uu._parseUrl( "user/index/" ).length ).to.be 3
     expect( uu._parseUrl( "/user/index/" ).length ).to.be 3
-
-#  it "test", ->
-#    expect(1).to.be(1)
 
 describe "1回目のアクセス", ->
   it "findRoute: 2つのURLから通過部分をみつける", ->
@@ -37,6 +35,7 @@ describe "resolvePath", ->
     expect( uu.resolvePath ["/"], ["detail", "id"] ).to.be.contain "/detail", "/detail/id"
     expect( uu.resolvePath ["/user"], ["detail", "id"] ).to.be.contain "/user/detail", "/user/detail/id"
     
+
 describe "splitPath", ->
   it "遷移前、遷移後のURLを共通部分、それ以外に分ける", ->
     [up, down, common] = uu.splitPath( "/user/edit/id", "/user/detail/id")
@@ -113,15 +112,35 @@ describe "URLパターンを登録する", ->
   it "遷移中に別のURLへ移動するパターン", (done) ->
 
     uu.activate "/users"
-    uu.activate "/users/edit/4"
-
-    wait 20
+    wait 40
     .then ->
-      uu.activate "/users/edit/1", true
+      uu.activate "/users/edit/1", interrupt:true
     .then ->
-      uu.activate "/users", true
+      uu.activate "/users", interrupt:true
     .then ->
       done()
+
+describe "履歴操作", ->
+  it "backメソッド",(done) ->
+    wait 400
+    .then ->
+      uu.back()
+    .then ->
+      expect(uu.url.val).to.be "/users/edit/1"
+      uu.back()
+    .then ->
+      expect(uu.url.val).to.be "/users"
+      expect(uu.back()).to.be false
+      uu.forward()
+    .then ->
+      expect(uu.url.val).to.be "/users/edit/1"
+      uu.forward()
+    .then ->
+      expect(uu.url.val).to.be "/users"
+      expect(uu.forward()).to.be false
+      done()
+    .catch (e)->
+      console.log e
 
 
 defer = ( ms ) ->

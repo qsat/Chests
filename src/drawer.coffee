@@ -52,13 +52,11 @@ class Drawer
   wrap: (value) ->
     d = defer()
     Promise.resolve( true )
-    .then =>
-      value
-    .then ->
-      d.resolve()
-    , ->
+    .then => value
+    .then -> d.resolve()
+    .catch ->
       d.reject()
-    d.catch -> value.reject?()
+      value.reject?()
     d
 
 #c = new Drawer

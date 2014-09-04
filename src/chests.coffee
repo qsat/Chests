@@ -20,7 +20,8 @@ class Chests
     @routes = []
     @drawer = new Drawer
 
-  log: -> console.log arguments... if @debug
+  log: ->
+    console.log arguments... if @debug
 
   trigger: (url, event) ->
     @log "\t#{event.toUpperCase()}\t#{url}"
@@ -138,25 +139,74 @@ class Chests
       else
         @drawer.add => @trigger '/', "enter"
 
-  activate: (url, interrupt = false) ->
+  activate: (args...) ->
+    {url, interrupt, isBF} = @parseArg args
+
+    @log "\n\n == HISTORY Back or Forward ==\n\n" if isBF
+
     @wait(0).then =>
       if interrupt and @drawer.drawers.length > 0
-        @log "\n ---- Interrupted: all promises will be rejected :: #{@url.prev?.url ? null}----\n"
+        @log "\n ---- Interrupted: all promises will be rejected :: #{@url?.prev?.val ? null}----\n"
         @drawer.clear()
-
-      @url = new Url prev: @url||null, url: url
-
+    .then =>
       @drawer.then => 
-        @log "\n「#{@url.prev?.url ? null}」 ================> 「#{url}」\n"
+        @log "\n「#{@url?.val ? null}」 ================> 「#{url.val}」\n"
 
-        @matchRoute( @url.url, @url.prev?.url ? null ).then =>
+        @matchRoute( url.val, @url?.val ? null ).then =>
           @drawer.clear()
-          @log "\n================= ACTIVATED 「#{url}」\n"
+          @log "\n================= ACTIVATED 「#{url.val}」\n"
+        @url = url
+    .catch (e) ->
+      console.log e
+
+  back: ->
+    return false unless @url.prev?
+    @activate @url.prev, isBF:true
+
+  forward: ->
+    return false unless @url.next?
+    @activate @url.next, isBF:true
+
+  parseArg: (args)->
+    defObj = url: null, interrupt: false, isBF: false
+    isBF = args[1]?.isBF ? false
+    if _.isString args[0]
+      url =  new Url val: args[0]
+    else if args[0] instanceof Url
+      url = args[0]
+    else
+      throw new Error "Chests.js :: invalid argument."
+
+    opt = args[1]
+    if isBF
+      # 戻る進むのとき
+      # 次へ前へは設定しない
+    else
+      # URL履歴
+      url.prev = @url || null
+      # URLを進むときのために
+      url.prev?.next = url
+
+    o = _.extend
+      url: url
+    , opt
+    _.defaults o, defObj
+
 
 class Url
-  prev: {}
-  url: ""
-  constructor: (opt)-> {@prev, @url} = opt
+
+  @urls: []
+  @LIMIT: 50
+
+  constructor: (opt={prev:null, next:null})->
+    {@prev, @val, @next} = opt
+    Url.urls.unshift @
+    (toolong=Url.urls.splice Url.LIMIT, 1).destroy?()
+
+  destroy: ->
+    @val = @prev = @next = null
+
+
 
 if typeof module is "object" && typeof module.exports is "object"
   module.exports = Chests
